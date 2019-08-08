@@ -849,7 +849,7 @@ def get_dataset_info(url, library_name, dataset_name, server_name=None, reposito
 
         
 def retrieve_data(url, library_name, dataset_name, server_name=None, repository_name="Foundation", 
-                    server_url=None, server_port=None, limit=100, offset=0, _filter=None, only_payload=False):
+                    server_url=None, server_port=None, limit=100, offset=0, filter_=None, only_payload=False):
     """Retrieves data from the dataset by a dataset name and a library name.
 
     Parameters
@@ -876,7 +876,7 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
         Number of records to retrieve (default is 100, maximum value is 10000).
     offset : int
         Dataset record offset (default is 0).
-    _filter : string    
+    filter_ : string    
         Dataset filter (JSON). Default is None.
     only_payload : bool, optional
         A flag used to determine the content of the response returned by the function (default is
@@ -893,8 +893,8 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
     
     initial_params = {"limit": limit, "offset": offset}
     
-    if _filter is not None:
-        initial_params["filter"] = _filter
+    if filter_ is not None:
+        initial_params["filter"] = filter_
     
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/libraries/{library_name}/datasets/{dataset_name}/data"
