@@ -109,6 +109,7 @@ def make_request(method, url, initial_params={}, data="", json_data=[], only_pay
         response.raise_for_status()
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
+        print(response.json()['error'])
     except Exception as err:
         print(f'Other error occurred: {err}')
     else:
