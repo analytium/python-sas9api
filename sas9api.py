@@ -683,7 +683,7 @@ def create_library(url, server_name, library_name, engine, display_name, path, l
     repository_name : str, optional
         Repository name (default is 'Foundation').
     is_preassigned : bool
-        A flag whic defines whether the created library should be preassigned (default is False).  
+        A flag which defines whether the created library should be preassigned (default is False).  
     only_payload : bool, optional
         A flag used to determine the content of the response returned by the function (default is
         True). If True - the function will return the truncated server response containing only
