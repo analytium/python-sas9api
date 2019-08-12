@@ -325,6 +325,10 @@ def execute_command(url, command, server_name=None, repository_name="Foundation"
     -------
     dict
         The server response (either full or truncated depending on the 'only_payload' flag) as a dictionary.
+        
+    Example
+    -------
+        >>> execute_command(url, "proc print data=sashelp.class;run;", server_name="SASApp")
     """
 
     
@@ -641,6 +645,20 @@ def get_library_info(url, library_name, server_name=None, repository_name="Found
     -------
     dict
         The server response (either full or truncated depending on the 'only_payload' flag) as a dictionary.
+        
+    Example
+    -------
+        >>> get_library_info(url, "sashelp", server_name="SASApp")
+        {'status': 200,
+         'error': None,
+         'payload': {'id': None,
+         'libname': 'SASHELP',
+         'engine': 'V9',
+         'path': 'your_path',
+         'level': 1,
+         'readonly': False,
+         'sequential': False,
+         'temp': False}}
     """
 
     
@@ -683,7 +701,7 @@ def create_library(url, server_name, library_name, engine, display_name, path, l
     repository_name : str, optional
         Repository name (default is 'Foundation').
     is_preassigned : bool
-        A flag which defines whether the created library should be preassigned (default is False).  
+        A flag whic defines whether the created library should be preassigned (default is False).  
     only_payload : bool, optional
         A flag used to determine the content of the response returned by the function (default is
         True). If True - the function will return the truncated server response containing only
@@ -776,6 +794,32 @@ def get_dataset_list(url, library_name, server_name=None, repository_name="Found
     dict/list
         The server response (either full or truncated depending on the 'only_payload' flag) 
         as a dictionary (full) or a list (truncated).
+        
+    Example
+    -------
+        >>> get_dataset_list(url, "sashelp", server_name="SASApp", only_payload=True)
+        [{'name': 'AACOMP',
+          'type': 'DATA',
+          'label': '',
+          'creationDate': '2018-11-01T01:15:06.18',
+          'modificationDate': '2018-11-01T01:15:06.18',
+          'objectsNumber': 2020,
+          'columns': None},
+         {'name': 'AARFM',
+          'type': 'DATA',
+          'label': '',
+          'creationDate': '2018-10-25T02:06:00.634',
+          'modificationDate': '2018-10-25T02:06:00.634',
+          'objectsNumber': 130,
+          'columns': None},
+         {'name': 'ADSMSG',
+          'type': 'MSGFILE',
+          'label': '',
+          'creationDate': '2018-10-25T02:13:18.751',
+          'modificationDate': '2018-10-25T02:13:18.751',
+          'objectsNumber': 426,
+          'columns': None},
+          ...]
     """
 
     
@@ -829,6 +873,61 @@ def get_dataset_info(url, library_name, dataset_name, server_name=None, reposito
     dict/list
         The server response (either full or truncated depending on the 'only_payload' flag) 
         as a dictionary (full) or a list (truncated).
+        
+    Example
+    -------
+        >>> get_dataset_info(url, "sashelp", "class", server_name="SASApp", only_payload=True)
+        {'name': 'CLASS',
+         'type': 'DATA',
+         'label': 'Student Data',
+         'creationDate': '2018-10-25T02:06:04.07',
+         'modificationDate': '2018-10-25T02:06:04.07',
+         'objectsNumber': 19,
+         'columns': [{'name': 'Name',
+           'type': 'char',
+           'extendedType': 'char',
+           'length': 8,
+           'notNull': False,
+           'indexType': '',
+           'sortedBy': 0,
+           'columnNumber': 1,
+           'label': ''},
+          {'name': 'Sex',
+           'type': 'char',
+           'extendedType': 'char',
+           'length': 1,
+           'notNull': False,
+           'indexType': '',
+           'sortedBy': 0,
+           'columnNumber': 2,
+           'label': ''},
+          {'name': 'Age',
+           'type': 'num',
+           'extendedType': 'num',
+           'length': 8,
+           'notNull': False,
+           'indexType': '',
+           'sortedBy': 0,
+           'columnNumber': 3,
+           'label': ''},
+          {'name': 'Height',
+           'type': 'num',
+           'extendedType': 'num',
+           'length': 8,
+           'notNull': False,
+           'indexType': '',
+           'sortedBy': 0,
+           'columnNumber': 4,
+           'label': ''},
+          {'name': 'Weight',
+           'type': 'num',
+           'extendedType': 'num',
+           'length': 8,
+           'notNull': False,
+           'indexType': '',
+           'sortedBy': 0,
+           'columnNumber': 5,
+           'label': ''}]}
     """
 
     
@@ -888,6 +987,21 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
     dict/list
         The server response (either full or truncated depending on the 'only_payload' flag) 
         as a dictionary (full) or a list of records (truncated).
+        
+    Example
+    -------
+        >>> retrieve_data(url, "sashelp", "buy", server_name="SASApp", only_payload=True)
+        [{'AMOUNT': -110000.0, 'DATE': '1996-01-01'},
+         {'AMOUNT': -1000.0, 'DATE': '1997-01-01'},
+         {'AMOUNT': -1000.0, 'DATE': '1998-01-01'},
+         {'AMOUNT': -51000.0, 'DATE': '1999-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2000-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2001-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2002-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2003-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2004-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2005-01-01'},
+         {'AMOUNT': 48000.0, 'DATE': '2006-01-01'}]
     """
 
     
@@ -1222,7 +1336,6 @@ def move_object(url, source_location, source_name, public_type, destination_loca
         The server response (either full or truncated depending on the 'only_payload' flag) as a dictionary.
     """
 
-    # When success response is None!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     endpoint = "sas/meta/objects/move"
     
@@ -1263,7 +1376,6 @@ def delete_object(url, source_location, source_name, public_type, repository_nam
         The server response (either full or truncated depending on the 'only_payload' flag) as a dictionary.
     """
     
-    # When success response is None!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     endpoint = "sas/meta/objects/delete"
         
