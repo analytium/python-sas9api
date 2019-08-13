@@ -988,7 +988,7 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
         The server response (either full or truncated depending on the 'only_payload' flag) 
         as a dictionary (full) or a list of records (truncated).
         
-    Example
+    Examples
     -------
         >>> retrieve_data(url, "sashelp", "buy", server_name="SASApp", only_payload=True)
         [{'AMOUNT': -110000.0, 'DATE': '1996-01-01'},
@@ -1002,6 +1002,14 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
          {'AMOUNT': -2000.0, 'DATE': '2004-01-01'},
          {'AMOUNT': -2000.0, 'DATE': '2005-01-01'},
          {'AMOUNT': 48000.0, 'DATE': '2006-01-01'}]
+         
+        >>> retrieve_data(url, "sashelp", "buy", server_name="SASApp", filter_='{"AMOUNT":-2000}', only_payload=True)
+        [{'AMOUNT': -2000.0, 'DATE': '2000-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2001-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2002-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2003-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2004-01-01'},
+         {'AMOUNT': -2000.0, 'DATE': '2005-01-01'}]
     """
 
     
@@ -1336,6 +1344,7 @@ def move_object(url, source_location, source_name, public_type, destination_loca
         The server response (either full or truncated depending on the 'only_payload' flag) as a dictionary.
     """
 
+    # When success response is None!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     endpoint = "sas/meta/objects/move"
     
@@ -1376,6 +1385,7 @@ def delete_object(url, source_location, source_name, public_type, repository_nam
         The server response (either full or truncated depending on the 'only_payload' flag) as a dictionary.
     """
     
+    # When success response is None!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     endpoint = "sas/meta/objects/delete"
         
