@@ -301,16 +301,17 @@ def execute_command(url, command, server_name=None, repository_name="Foundation"
         The URL of the server with the installed SAS9API
     command : str
         SAS command to send to the server.
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None). 
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None). 
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     log_enabled : bool
@@ -328,7 +329,7 @@ def execute_command(url, command, server_name=None, repository_name="Foundation"
         
     Example
     -------
-        >>> execute_command(url, "proc print data=sashelp.class;run;", server_name="SASApp")
+        >>> execute_command(url, "proc print data=sashelp.class;run;")
     """
 
     
@@ -336,16 +337,18 @@ def execute_command(url, command, server_name=None, repository_name="Foundation"
         initial_params = {"logEnabled": "true"}
     else:
         initial_params = {"logEnabled": "false"}
+        
+    endpoint = "sas/cmd"
     
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/cmd"
-        initial_params["repositoryName"] = repository_name
+        initial_params["repositoryName"] = repository_name    
     elif server_url is not None and server_port is not None:
-        endpoint = "sas/cmd"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either server_name or (server_url and server_port) must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
     
     return make_request("PUT", assemble_url(url, endpoint),
                        initial_params=initial_params, data=command, only_payload=only_payload)
@@ -573,16 +576,17 @@ def get_library_list(url, server_name=None, repository_name="Foundation",
     ----------
     url : str
         The URL of the server with the installed SAS9API.
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None).
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None).
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     only_payload : bool, optional
@@ -600,15 +604,17 @@ def get_library_list(url, server_name=None, repository_name="Foundation",
     
     initial_params = dict()
     
+    endpoint = "sas/libraries"
+    
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/libraries"
         initial_params["repositoryName"] = repository_name
     elif server_url is not None and server_port is not None:
-        endpoint = "sas/libraries"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either server_name or (server_url and server_port) must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
     
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -624,16 +630,17 @@ def get_library_info(url, library_name, server_name=None, repository_name="Found
         The URL of the server with the installed SAS9API.
     library_name : str
         Library name.
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None).
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None).
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     only_payload : bool, optional
@@ -664,15 +671,17 @@ def get_library_info(url, library_name, server_name=None, repository_name="Found
     
     initial_params = dict()
     
+    endpoint = f"sas/libraries/{library_name}"
+    
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/libraries/{library_name}"
         initial_params["repositoryName"] = repository_name
     elif server_url is not None and server_port is not None:
-        endpoint = f"sas/libraries/{library_name}"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either server_name or (server_url and server_port) must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
     
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -772,16 +781,17 @@ def get_dataset_list(url, library_name, server_name=None, repository_name="Found
         The URL of the server with the installed SAS9API.
     library_name : str
         Library name.
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None).
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None).
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     only_payload : bool, optional
@@ -825,15 +835,17 @@ def get_dataset_list(url, library_name, server_name=None, repository_name="Found
     
     initial_params = dict()
     
+    endpoint = f"sas/libraries/{library_name}/datasets"
+    
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/libraries/{library_name}/datasets"
         initial_params = {"repositoryName": repository_name}
     elif server_url is not None and server_port is not None:
-        endpoint = f"sas/libraries/{library_name}/datasets"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either 'server_name' or ('server_url' and 'server_port') must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
     
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -851,16 +863,17 @@ def get_dataset_info(url, library_name, dataset_name, server_name=None, reposito
         Library name.
     dataset_name : str
         Dataset name.
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None).
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None).
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     only_payload : bool, optional
@@ -933,15 +946,17 @@ def get_dataset_info(url, library_name, dataset_name, server_name=None, reposito
     
     initial_params = dict()
     
+    endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}"
+    
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/libraries/{library_name}/datasets/{dataset_name}"
         initial_params = {"repositoryName": repository_name}
     elif server_url is not None and server_port is not None:
-        endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either 'server_name' or ('server_url' and 'server_port') must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
     
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -959,16 +974,17 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
         Library name.
     dataset_name : str
         Dataset name.
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None).
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None).
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     limit : int
@@ -1015,6 +1031,8 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
     
     initial_params = {"limit": limit, "offset": offset}
     
+    endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}/data"
+    
     if filter_ is not None:
         initial_params["filter"] = filter_
     
@@ -1022,11 +1040,11 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
         endpoint = f"sas/servers/{server_name}/libraries/{library_name}/datasets/{dataset_name}/data"
         initial_params["repositoryName"] = repository_name
     elif server_url is not None and server_port is not None:
-        endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}/data"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either 'server_name' or ('server_url' and 'server_port') must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
         
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -1047,16 +1065,17 @@ def insert_data(url, library_name, dataset_name, json_data, server_name=None, re
         Dataset name.
     json_data : list
         Data to insert (see an example below).
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None).
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None).
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     by_key : str
@@ -1084,16 +1103,18 @@ def insert_data(url, library_name, dataset_name, json_data, server_name=None, re
     initial_params = dict()
     if by_key is not None:
         initial_params["byKey"] = by_key
+        
+    endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}/data"
     
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/libraries/{library_name}/datasets/{dataset_name}/data"
         initial_params["repositoryName"] = repository_name
     elif server_url is not None and server_port is not None:
-        endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}/data"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either 'server_name' or ('server_url' and 'server_port') must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
     
     return make_request("PUT", assemble_url(url, endpoint),
                        initial_params=initial_params, 
@@ -1114,16 +1135,17 @@ def replace_all_data(url, library_name, dataset_name, json_data, server_name=Non
         Dataset name.
     json_data : list
         Data to replace (see an example below).
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None).
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None).
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     only_payload : bool, optional
@@ -1148,15 +1170,17 @@ def replace_all_data(url, library_name, dataset_name, json_data, server_name=Non
     
     initial_params = dict()
     
+    endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}/data"
+    
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/libraries/{library_name}/datasets/{dataset_name}/data"
         initial_params["repositoryName"] = repository_name
     elif server_url is not None and server_port is not None:
-        endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}/data"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either 'server_name' or ('server_url' and 'server_port') must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
         
     return make_request("POST", assemble_url(url, endpoint),
                        initial_params=initial_params,  
@@ -1175,16 +1199,17 @@ def delete_dataset(url, library_name, dataset_name, server_name=None, repository
         Library name.
     dataset_name : str
         Dataset name.
-    server_name : str (optional if 'server_url' and 'server_port' are specified)
+    server_name : str (optional, the default Server Name from the configuration file will be used 
+                       if neither 'server_name nor ('server_url' and 'server_port') are specified)
         Workspace server name (default is None).
     repository_name : str, optional
         Repository name (default is 'Foundation').
-    server_url : str (optional if 'server_name' is specified)
+    server_url : str (optional; must come in pair with 'server_port' if specified)
         Workspace server URL (default is None).
-    server_port : int/str (optional if 'server_name' is specified)
+    server_port : int/str (optional; must come in pair with 'server_url' if specified)
         Workspace server port (default is None).
         
-    Either 'server_name' or ('server_url' and 'server_port') must be specified. If they all are specified
+    If 'server_name' and the pair ('server_url' and 'server_port') are both specified
     the request is made using 'server_name'.
     
     only_payload : bool, optional
@@ -1201,15 +1226,17 @@ def delete_dataset(url, library_name, dataset_name, server_name=None, repository
     
     initial_params = dict()
     
+    endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}/data"
+    
     if server_name is not None:
         endpoint = f"sas/servers/{server_name}/libraries/{library_name}/datasets/{dataset_name}/data"
         initial_params["repositoryName"] = repository_name
     elif server_url is not None and server_port is not None:
-        endpoint = f"sas/libraries/{library_name}/datasets/{dataset_name}/data"
         initial_params["serverUrl"] = server_url
         initial_params["serverPort"] = server_port
     else:
-        raise KeyError("Missing parameters! Either 'server_name' or ('server_url' and 'server_port') must be specified!")
+        print("The default Server Name from the configuration file will be used "
+              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
         
     return make_request("DELETE", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
