@@ -348,7 +348,7 @@ def execute_command(url, command, server_name=None, repository_name="Foundation"
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
     
     return make_request("PUT", assemble_url(url, endpoint),
                        initial_params=initial_params, data=command, only_payload=only_payload)
@@ -614,7 +614,7 @@ def get_library_list(url, server_name=None, repository_name="Foundation",
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
     
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -681,7 +681,7 @@ def get_library_info(url, library_name, server_name=None, repository_name="Found
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
     
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -845,7 +845,7 @@ def get_dataset_list(url, library_name, server_name=None, repository_name="Found
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
     
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -956,7 +956,7 @@ def get_dataset_info(url, library_name, dataset_name, server_name=None, reposito
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
     
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -1044,7 +1044,7 @@ def retrieve_data(url, library_name, dataset_name, server_name=None, repository_
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
         
     return make_request("GET", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
@@ -1114,7 +1114,7 @@ def insert_data(url, library_name, dataset_name, json_data, server_name=None, re
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
     
     return make_request("PUT", assemble_url(url, endpoint),
                        initial_params=initial_params, 
@@ -1180,7 +1180,7 @@ def replace_all_data(url, library_name, dataset_name, json_data, server_name=Non
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
         
     return make_request("POST", assemble_url(url, endpoint),
                        initial_params=initial_params,  
@@ -1236,7 +1236,7 @@ def delete_dataset(url, library_name, dataset_name, server_name=None, repository
         initial_params["serverPort"] = server_port
     else:
         print("The default Server Name from the configuration file will be used "
-              "because neither 'server_name' nor ('server_url' and 'server_port') are not specified!")
+              "because neither 'server_name' nor ('server_url' and 'server_port') are specified!")
         
     return make_request("DELETE", assemble_url(url, endpoint),
                        initial_params=initial_params, only_payload=only_payload)
